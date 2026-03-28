@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>絕對孤獨：拒絕互動的留言板</title>
+    <style>
+        /* 視覺風格：極簡黑暗 */
+        body {
+            background: #050505;
+            color: #333;
+            font-family: sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* 輸入框震動效果 */
+        #msg-box {
+            width: 80%;
+            max-width: 400px;
+            height: 150px;
+            background: #0a0a0a;
+            border: 1px solid #1a1a1a;
+            color: #555;
+            padding: 15px;
+            outline: none;
+            transition: transform 0.05s;
+        }
+
+        /* 逃跑按鈕樣式 */
+        #send-btn {
+            position: fixed;
+            padding: 10px 25px;
+            background: #111;
+            color: #444;
+            border: 1px solid #222;
+            cursor: pointer;
+            z-index: 999;
+            transition: all 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .hint { margin-top: 20px; font-size: 0.7rem; color: #1a1a1a; }
+    </style>
+</head>
+<body>
+
+    <h1 style="color:#111; letter-spacing: 10px;">SILENCE</h1>
+    
+    <textarea id="msg-box" placeholder="沈默是金..."></textarea>
+    
+    <button id="send-btn">傳送</button>
+
+    <div class="hint" id="status">目前狀態：無人觀測</div>
+
+    <script>
+        const btn = document.getElementById('send-btn');
+        const box = document.getElementById('msg-box');
+        const status = document.getElementById('status');
+
+        // 1. 核心邏輯：按鈕逃跑
+        const moveButton = () => {
+            const maxX = window.innerWidth - btn.offsetWidth;
+            const maxY = window.innerHeight - btn.offsetHeight;
+            const randomX = Math.random() * maxX;
+            const randomY = Math.random() * maxY;
+            
+            btn.style.left = `${randomX}px`;
+            btn.style.top = `${randomY}px`;
+            status.innerText = "狀態：偵測到入侵者";
+        };
+
+        btn.addEventListener('mouseover', moveButton);
+        btn.addEventListener('touchstart', moveButton); // 支援手機觸控
+
+        // 2. 核心邏輯：文字叛逃 (隨機震動)
+        box.addEventListener('input', () => {
+            const rot = (Math.random() - 0.5) * 4;
+            const scale = 1 + (Math.random() - 0.5) * 0.02;
+            box.style.transform = `rotate(${rot}deg) scale(${scale})`;
+        });
+
+        // 3. 核心邏輯：萬一被抓到了 (點擊處理)
+        btn.addEventListener('click', () => {
+            alert("錯誤：溝通嘗試失敗。訊息已轉化為虛無。");
+            box.value = "";
+            status.innerText = "狀態：重新歸於寂靜";
+        });
+    </script>
+</body>
+</html>
